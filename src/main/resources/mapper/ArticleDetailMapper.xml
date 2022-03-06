@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.javaee.blog.dao.ArticleDetailMapper">
+  <resultMap id="BaseResultMap" type="xyz.javaee.blog.entity.ArticleDetail">
+    <!--@mbg.generated-->
+    <!--@Table Meow.article_detail-->
+    <id column="article_id" jdbcType="CHAR" property="articleId" />
+    <result column="article_content" jdbcType="VARCHAR" property="articleContent" />
+    <result column="type" jdbcType="BOOLEAN" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    article_id, article_content, `type`
+  </sql>
+</mapper>
