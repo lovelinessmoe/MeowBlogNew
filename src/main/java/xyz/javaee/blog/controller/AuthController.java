@@ -43,8 +43,7 @@ public class AuthController {
         //Redis中删除对应的验证码
         jedis.del(captchaVerification);
         if (code.equals(captchaCode)) {
-            JwtUser user = authService.createToken(loginRequest);
-            return Result.ok().data(user);
+            return authService.createToken(loginRequest);
         } else {
             return Result.RCode(false, ResultCode.USER_CAPTCHA_CODE_ERR);
         }

@@ -56,11 +56,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // 指定的接口直接放行
                 // swagger
                 .antMatchers(SecurityConstants.SWAGGER_WHITELIST).permitAll()
-                .antMatchers(SecurityConstants.H2_CONSOLE).permitAll()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SYSTEM_WHITELIST).permitAll()
                 // 其他的接口都需要认证后才能请求
-                .anyRequest().authenticated()
-                .and()
+                .anyRequest().authenticated().and()
                 //添加自定义Filter
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), stringRedisTemplate))
                 // 不需要session（不创建会话）
@@ -68,8 +66,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // 授权异常处理
                 .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 .accessDeniedHandler(new JwtAccessDeniedHandler());
-        // 防止H2 web 页面的Frame 被拦截
-        http.headers().frameOptions().disable();
     }
 
     /**
@@ -79,7 +75,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(singletonList("*"));
-        // configuration.setAllowedOriginPatterns(singletonList("*"));
         configuration.setAllowedHeaders(singletonList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
         configuration.setExposedHeaders(singletonList(SecurityConstants.TOKEN_HEADER));

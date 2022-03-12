@@ -31,7 +31,9 @@ public final class SecurityConstants {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String TOKEN_TYPE = "JWT";
 
-    // Swagger WHITELIST
+    /**
+     * swagger的白名单
+     */
     public static final String[] SWAGGER_WHITELIST = {
             "/swagger-ui.html",
             "/swagger-ui/*",
@@ -43,9 +45,9 @@ public final class SecurityConstants {
             "/doc.html",
     };
 
-    public static final String H2_CONSOLE = "/h2-console/**";
-
-    // System WHITELIST
+    /**
+     * 系统的白名单
+     */
     public static final String[] SYSTEM_WHITELIST = {
             "/auth/*",
     };

@@ -1,18 +1,18 @@
-package xyz.javaee.blog.service.serviceImpl;
+package xyz.javaee.blog.service.serviceimpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.List;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import xyz.javaee.blog.dao.UserMapper;
 import xyz.javaee.blog.entity.User;
 import xyz.javaee.blog.service.UserService;
 
+/**
+ * @author loveliness
+ */
 @Service
 @AllArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -49,4 +49,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = login(user1);
         return user != null;
     }
+
 }

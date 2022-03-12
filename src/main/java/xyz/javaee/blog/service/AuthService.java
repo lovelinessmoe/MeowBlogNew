@@ -10,6 +10,7 @@ import xyz.javaee.blog.entity.User;
 import xyz.javaee.blog.utils.CurrentUserUtils;
 import xyz.javaee.blog.utils.JwtTokenUtils;
 import xyz.javaee.blog.utils.Result;
+import xyz.javaee.blog.utils.ResultCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,20 +26,21 @@ public class AuthService {
     private final CurrentUserUtils currentUserUtils;
 
 
-    public JwtUser createToken(User loginRequest) {
+    public Result createToken(User loginRequest) {
         User user = userService.login(loginRequest);
 
         if (user == null) {
-            throw new BadCredentialsException("用户名或密码不正确");
+            return Result.RCode(false, ResultCode.USER_CREDENTIALS_ERROR);
         }
 
         if (!userService.check(loginRequest.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("用户名或密码不正确");
+            return Result.RCode(false, ResultCode.USER_CREDENTIALS_ERROR);
+
         }
         JwtUser jwtUser = new JwtUser(user);
 
         if (!jwtUser.isEnabled()) {
-            throw new BadCredentialsException("用户被禁止登陆");
+            return Result.RCode(false, ResultCode.USER_ACCOUNT_DISABLE);
         }
         List<String> authorities = jwtUser.getAuthorities()
                 .stream()
@@ -48,7 +50,7 @@ public class AuthService {
         stringRedisTemplate.opsForValue().set(user.getUserId(), token);
         jwtUser.setToken(token);
 
-        return jwtUser;
+        return Result.ok().data(jwtUser);
     }
 
     public Result removeToken() {
@@ -56,7 +58,7 @@ public class AuthService {
             String userId = currentUserUtils.getCurrentUser().getUserId();
             stringRedisTemplate.delete(userId);
         } catch (Exception e) {
-           return Result.error().message("用户不存在");
+            return Result.RCode(false, ResultCode.USER_ACCOUNT_NOT_EXIST);
         }
         return Result.ok();
     }

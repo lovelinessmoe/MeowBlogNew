@@ -7,6 +7,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import xyz.javaee.blog.constants.SecurityConstants;
 
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
@@ -15,7 +16,7 @@ public class CorsConfig implements WebMvcConfigurer {
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addExposedHeader("Authorization");
+        corsConfiguration.addExposedHeader(SecurityConstants.TOKEN_HEADER);
         return corsConfiguration;
     }
 

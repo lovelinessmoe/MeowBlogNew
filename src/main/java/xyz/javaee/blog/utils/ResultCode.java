@@ -5,28 +5,27 @@ package xyz.javaee.blog.utils;
  * @Description: 返回码定义
  * 规定:
  * #200表示成功
- * #1001～1999 区间表示参数错误
+ * #1001～1999 区间表示文章错误
  * #2001～2999 区间表示用户错误
  * #3001～3999 区间表示接口异常
  * #后面对什么的操作自己在这里注明就行了
  */
-public enum ResultCode implements CustomizeResultCode{
+public enum ResultCode{
     /* 成功 */
     SUCCESS(200, null),
 
     /* 默认失败 */
     COMMON_FAIL(999, "失败"),
 
-    /* 参数错误：1000～1999 */
-    PARAM_NOT_VALID(1001, "参数无效"),
-    PARAM_IS_BLANK(1002, "参数为空"),
-    PARAM_TYPE_ERROR(1003, "参数类型错误"),
-    PARAM_NOT_COMPLETE(1004, "参数缺失"),
+    /*文章错误*/
+    ARTICLE_NOT_ADD(1001,"文章添加失败，请更换访问地址"),
+    ARTICLE_NOT_DELET(1002,"文章删除失败"),
+
 
     /* 用户错误 */
     USER_NOT_LOGIN(2001, "用户未登录"),
     USER_ACCOUNT_EXPIRED(2002, "账号已过期"),
-    USER_CREDENTIALS_ERROR(2003, "密码错误"),
+    USER_CREDENTIALS_ERROR(2003, "用户名或密码不正确"),
     USER_CREDENTIALS_EXPIRED(2004, "密码过期"),
     USER_ACCOUNT_DISABLE(2005, "账号不可用"),
     USER_ACCOUNT_LOCKED(2006, "账号被锁定"),
@@ -36,16 +35,9 @@ public enum ResultCode implements CustomizeResultCode{
     USER_CAPTCHA_CODE_ERR(2010, "验证码错误"),
 
 
-
-    /*部门错误*/
-    DEPARTMENT_NOT_EXIST(3007, "部门不存在"),
-    DEPARTMENT_ALREADY_EXIST(3008, "部门已存在"),
-
     /* 业务错误 */
     NO_PERMISSION(3001, "没有权限"),
 
-    /*角色错误*/
-    ROLE_ALREADY_EXIST(4001,"角色已存在"),
 
     /*运行时异常*/
     ARITHMETIC_EXCEPTION(9001,"算数异常");
@@ -60,12 +52,10 @@ public enum ResultCode implements CustomizeResultCode{
         this.message = message;
     }
 
-    @Override
     public Integer getCode() {
         return code;
     }
 
-    @Override
     public String getMessage() {
         return message;
     }

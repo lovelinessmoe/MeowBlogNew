@@ -24,4 +24,5 @@
 		#{email,jdbcType=VARCHAR})
 
 	</insert>
+
 </mapper>

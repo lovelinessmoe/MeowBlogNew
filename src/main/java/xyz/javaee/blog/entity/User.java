@@ -1,9 +1,6 @@
 package xyz.javaee.blog.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -33,28 +30,28 @@ public class User implements Serializable {
     /**
      * 角色id
      */
-    @TableField(value = "role_id")
+    @TableField(value = "role_id", condition = SqlCondition.EQUAL)
     @ApiModelProperty(value = "角色id")
     private Integer roleId;
 
     /**
      * 昵称
      */
-    @TableField(value = "user_name")
+    @TableField(value = "user_name", condition = SqlCondition.LIKE)
     @ApiModelProperty(value = "昵称")
     private String userName;
 
     /**
      * 电话号
      */
-    @TableField(value = "telephone")
+    @TableField(value = "telephone", condition = SqlCondition.LIKE)
     @ApiModelProperty(value = "电话号")
     private String telephone;
 
     /**
      * 年龄
      */
-    @TableField(value = "age")
+    @TableField(value = "age", condition = SqlCondition.EQUAL)
     @ApiModelProperty(value = "年龄")
     private Integer age;
 
@@ -68,7 +65,7 @@ public class User implements Serializable {
     /**
      * 邮箱
      */
-    @TableField(value = "email")
+    @TableField(value = "email", condition = SqlCondition.LIKE)
     @ApiModelProperty(value = "邮箱")
     private String email;
 

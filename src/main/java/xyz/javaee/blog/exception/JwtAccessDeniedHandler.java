@@ -20,16 +20,12 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
      * 将调用此方法发送403响应以及错误信息
      */
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-
+    public void handle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-
-        String s = JSONUtil.toJsonStr(Result.error().data(ResultCode.NO_PERMISSION));
-
+        String s = JSONUtil.toJsonStr(Result.RCode(false, ResultCode.NO_PERMISSION));
         response.getWriter().println(s);
-/*
-        accessDeniedException = new AccessDeniedException("Sorry you don not enough permissions to access it!");
-        response.sendError(HttpServletResponse.SC_FORBIDDEN, accessDeniedException.getMessage());*/
     }
 }

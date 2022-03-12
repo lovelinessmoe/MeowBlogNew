@@ -6,3 +6,4 @@ public interface ArticleDetailService extends IService<ArticleDetail>{
 
 
 }
+
