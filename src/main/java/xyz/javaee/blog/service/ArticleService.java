@@ -9,16 +9,29 @@ import xyz.javaee.blog.utils.Result;
 /**
  * @author loveliness
  */
-public interface ArticleService extends IService<Article>{
+public interface ArticleService extends IService<Article> {
+    /**
+     * 如果存在则更新
+     * 不存在则插入
+     *
+     * @param articleVO 博客文章的所有信息
+     * @return 是否成功
+     */
+    Result saveOrUpdateArticle(ArticleDetailVO articleVO);
 
     /**
-     * 获取一篇文章的详细信息
-     * @param articleId 文章的ID
-     * @return 这片文章的详细信息
+     * 删除博客文章
+     *
+     * @param articleId 文章id
+     * @return 是否成功
      */
-    ArticleDetail getOneArticle(String articleId);
-
-    Result addArticle(ArticleDetailVO articleVO);
-
     Result removeArticle(String articleId);
+
+    /**
+     * 获取文章细节
+     *
+     * @param articleId 文章id
+     * @return 文章对象的文章detail对象的相同
+     */
+    ArticleDetailVO getArticleDetail(String articleId);
 }

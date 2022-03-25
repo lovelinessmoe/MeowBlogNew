@@ -3,6 +3,7 @@ package xyz.javaee.blog.controller.backstage;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -61,11 +62,9 @@ public class UserController {
     @GetMapping("/list")
     @ApiOperationSupport(order = 2)
     @ApiOperation(value = "分页", notes = "传入用户")
-    public Result list(User user, Page query) {
-//        System.err.println(query.toString());
+    public Result list(User user, PageDTO<User> query) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>(user);
-        IPage<User> pages = userService.page(query, userQueryWrapper);
+        PageDTO<User> pages = userService.page(query, userQueryWrapper);
         return Result.ok().data(pages);
     }
-
 }

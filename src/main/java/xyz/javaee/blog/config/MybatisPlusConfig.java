@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author NieChangan
+ * 开启MybatisPlus的分页插件
+ *
+ * @author loveliness
  */
 @Configuration
 @MapperScan("xyz.javaee.blog.dao")

@@ -1,11 +1,11 @@
 package xyz.javaee.blog.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import xyz.javaee.blog.entity.User;
+import xyz.javaee.blog.utils.Result;
 
 /**
- * @Description:
+ * @Description: 用户的服务
  * @Author loveliness
  * @Date 2021/10/5 4:01 下午
  * @Version 1.0
@@ -35,6 +35,22 @@ public interface UserService extends IService<User> {
      * @return 失败-1 成功影响的条数1
      */
     int register(User userRegister);
+
+    /**
+     * 查看redis存的验证码是否正确
+     *
+     * @param captchaVerification redis 的 key
+     * @param code                输入的验证码
+     * @return 正确true 错误false
+     */
+    boolean checkCaptcha(String captchaVerification, String code);
+
+    /**
+     * 生成验证码 存入redis
+     *
+     * @return 包含验证码票证的结果
+     */
+    Result generateCaptcha();
 }
 
 

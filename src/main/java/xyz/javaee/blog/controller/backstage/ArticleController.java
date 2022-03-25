@@ -1,17 +1,14 @@
 package xyz.javaee.blog.controller.backstage;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import xyz.javaee.blog.entity.Article;
-import xyz.javaee.blog.entity.ArticleDetail;
 import xyz.javaee.blog.entity.vo.ArticleDetailVO;
 import xyz.javaee.blog.service.ArticleService;
 import xyz.javaee.blog.utils.Result;
@@ -37,8 +34,8 @@ public class ArticleController {
     @ApiOperationSupport(order = 1)
     @ApiOperation(value = "详情", notes = "传入articleId")
     public Result detail(@PathVariable("articleId") String articleId) {
-        ArticleDetail detail = articleService.getOneArticle(articleId);
-        return Result.ok().data(detail);
+        ArticleDetailVO articleDetail = articleService.getArticleDetail(articleId);
+        return Result.ok().data(articleDetail);
     }
 
 
@@ -75,18 +72,18 @@ public class ArticleController {
     @GetMapping("/list")
     @ApiOperationSupport(order = 2)
     @ApiOperation(value = "分页", notes = "传入文章")
-    public Result list(Article article, Page query) {
+    public Result list(Article article, PageDTO<Article> query) {
         QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>(article);
-        IPage<Article> pages = articleService.page(query, articleQueryWrapper);
+        PageDTO<Article> pages = articleService.page(query, articleQueryWrapper);
         return Result.ok().data(pages);
     }
 
     /**
      * 添加 文章
      */
-    @PostMapping("/addArticle")
-    @ApiOperation(value = "分页", notes = "传入文章")
-    public Result addArticle(@RequestBody ArticleDetailVO articleVO) {
-        return articleService.addArticle(articleVO);
+    @PostMapping("/saveOrUpdateArticle")
+    @ApiOperation(value = "添加或更新文章", notes = "传入文章")
+    public Result saveOrUpdateArticle(@RequestBody ArticleDetailVO articleVO) {
+        return articleService.saveOrUpdateArticle(articleVO);
     }
 }

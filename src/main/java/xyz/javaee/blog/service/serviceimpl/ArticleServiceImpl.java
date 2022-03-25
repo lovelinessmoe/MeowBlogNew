@@ -14,6 +14,8 @@ import xyz.javaee.blog.service.ArticleService;
 import xyz.javaee.blog.utils.Result;
 import xyz.javaee.blog.utils.ResultCode;
 
+import java.util.Objects;
+
 /**
  * @author loveliness
  */
@@ -25,19 +27,21 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private final ArticleMapper articleMapper;
     private final ArticleDetailMapper articleDetailMapper;
 
-    @Override
-    public ArticleDetail getOneArticle(String articleId) {
-        return articleMapper.getOneArticle(articleId);
-    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result addArticle(ArticleDetailVO articleVO) {
+    public Result saveOrUpdateArticle(ArticleDetailVO articleVO) {
         try {
+            Article getArticle = articleMapper.selectById(articleVO.getArticleId());
             Article article = articleConverter.articleDetailVOToArticle(articleVO);
-            articleMapper.insert(article);
             ArticleDetail articleDetail = articleConverter.articleDetailVOToArticleDetail(articleVO);
-            articleDetailMapper.insert(articleDetail);
+            if (Objects.isNull(getArticle)) {
+                articleMapper.insert(article);
+                articleDetailMapper.insert(articleDetail);
+            } else {
+                articleMapper.updateById(article);
+                articleDetailMapper.updateById(articleDetail);
+            }
         } catch (Exception e) {
             return Result.RCode(false, ResultCode.ARTICLE_NOT_ADD);
         }
@@ -54,5 +58,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             return Result.RCode(false, ResultCode.ARTICLE_NOT_DELET);
         }
         return Result.ok();
+    }
+
+    @Override
+    public ArticleDetailVO getArticleDetail(String articleId) {
+        return articleMapper.getArticleDetail(articleId);
     }
 }
