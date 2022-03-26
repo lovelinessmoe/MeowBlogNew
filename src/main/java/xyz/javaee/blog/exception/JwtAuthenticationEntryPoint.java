@@ -23,9 +23,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
+        System.out.println(request.getRequestURL());
+
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        String s = JSONUtil.toJsonStr(Result.RCode(false,ResultCode.USER_ACCOUNT_EXPIRED));
+        String s = JSONUtil.toJsonStr(Result.RCode(false, ResultCode.USER_ACCOUNT_EXPIRED));
         response.getWriter().println(s);
     }
 }

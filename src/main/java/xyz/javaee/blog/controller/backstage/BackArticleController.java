@@ -23,7 +23,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/backstage/article")
-public class ArticleController {
+public class BackArticleController {
 
     private final ArticleService articleService;
 
@@ -74,6 +74,7 @@ public class ArticleController {
     @ApiOperation(value = "分页", notes = "传入文章")
     public Result list(Article article, PageDTO<Article> query) {
         QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>(article);
+        articleQueryWrapper.orderByDesc(Article.COL_CREATE_TIME);
         PageDTO<Article> pages = articleService.page(query, articleQueryWrapper);
         return Result.ok().data(pages);
     }
