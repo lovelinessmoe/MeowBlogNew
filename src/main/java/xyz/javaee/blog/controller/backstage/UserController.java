@@ -16,6 +16,7 @@ import xyz.javaee.blog.utils.Result;
 import xyz.javaee.blog.utils.ResultCode;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 /**
  * @author loveliness
@@ -57,6 +58,16 @@ public class UserController {
     }
 
     /**
+     * 删除多个用户
+     */
+    @PostMapping("/removeMany")
+    @ApiOperation(value = "删除多个用户", notes = "传入用户集合")
+    public Result removeMany(@ApiParam(value = "用户集合", required = true)
+                             @RequestBody ArrayList<User> userList) {
+        return Result.RCode(userService.removeByIds(userList), ResultCode.SUCCESS);
+    }
+
+    /**
      * 分页 文章
      */
     @GetMapping("/list")
@@ -64,6 +75,9 @@ public class UserController {
     @ApiOperation(value = "分页", notes = "传入用户")
     public Result list(User user, PageDTO<User> query) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>(user);
+        //管理员的角色id
+        final int adminRoleNum = 1;
+        userQueryWrapper.ne(User.COL_ROLE_ID, adminRoleNum);
         PageDTO<User> pages = userService.page(query, userQueryWrapper);
         return Result.ok().data(pages);
     }

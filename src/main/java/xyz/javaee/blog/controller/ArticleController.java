@@ -29,7 +29,12 @@ public class ArticleController {
         QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>(article);
         articleQueryWrapper.orderByDesc(Article.COL_CREATE_TIME);
         PageDTO<Article> pages = articleService.page(query, articleQueryWrapper);
-        return Result.ok().data(pages);
+
+        return Result.ok()
+                //文章列表
+                .data("records", pages.getRecords())
+                //是否有下一页
+                .data("hasNextPage", pages.hasNext());
     }
 
 

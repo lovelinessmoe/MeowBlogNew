@@ -15,6 +15,8 @@ import xyz.javaee.blog.utils.Result;
 import xyz.javaee.blog.utils.ResultCode;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author loveliness
@@ -64,6 +66,16 @@ public class BackArticleController {
     @ApiOperation(value = "删除文章", notes = "传入id")
     public Result remove(@ApiParam(value = "主键", required = true) @RequestParam String articleId) {
         return articleService.removeArticle(articleId);
+    }
+
+    /**
+     * 删除多个文章
+     */
+    @PostMapping("/removeMany")
+    @ApiOperation(value = "删除多个文章", notes = "传入多个对象")
+    public Result removeMany(@ApiParam(value = "对象List", required = true)
+                             @RequestBody ArrayList<Article> articleList) {
+        return articleService.removeMany(articleList);
     }
 
     /**

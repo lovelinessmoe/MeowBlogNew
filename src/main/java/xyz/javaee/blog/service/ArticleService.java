@@ -6,6 +6,8 @@ import xyz.javaee.blog.entity.ArticleDetail;
 import xyz.javaee.blog.entity.vo.ArticleDetailVO;
 import xyz.javaee.blog.utils.Result;
 
+import java.util.List;
+
 /**
  * @author loveliness
  */
@@ -34,4 +36,12 @@ public interface ArticleService extends IService<Article> {
      * @return 文章对象的文章detail对象的相同
      */
     ArticleDetailVO getArticleDetail(String articleId);
+
+    /**
+     * 删除多个文章
+     *
+     * @param articleList 文章列表
+     * @return Result
+     */
+    Result removeMany(List<Article> articleList);
 }

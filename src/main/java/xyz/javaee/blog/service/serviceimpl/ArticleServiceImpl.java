@@ -14,6 +14,7 @@ import xyz.javaee.blog.service.ArticleService;
 import xyz.javaee.blog.utils.Result;
 import xyz.javaee.blog.utils.ResultCode;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -54,6 +55,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         try {
             articleMapper.deleteById(articleId);
             articleDetailMapper.deleteById(articleId);
+        } catch (Exception e) {
+            return Result.RCode(false, ResultCode.ARTICLE_NOT_DELET);
+        }
+        return Result.ok();
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result removeMany(List<Article> articleList) {
+        try {
+            articleMapper.deleteBatchIds(articleList);
+            articleDetailMapper.deleteBatchIds(articleList);
         } catch (Exception e) {
             return Result.RCode(false, ResultCode.ARTICLE_NOT_DELET);
         }
