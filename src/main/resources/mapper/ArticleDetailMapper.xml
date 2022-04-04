@@ -6,10 +6,9 @@
     <!--@Table Meow.article_detail-->
     <id column="article_id" jdbcType="CHAR" property="articleId" />
     <result column="article_content" jdbcType="VARCHAR" property="articleContent" />
-    <result column="type" jdbcType="BOOLEAN" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    article_id, article_content, `type`
+    article_id, article_content
   </sql>
 </mapper>

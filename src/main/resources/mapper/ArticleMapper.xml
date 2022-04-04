@@ -7,10 +7,15 @@
 		<id column="article_id" jdbcType="INTEGER" property="articleId"/>
 		<result column="article_title" jdbcType="VARCHAR" property="articleTitle"/>
 		<result column="create_time" jdbcType="DATE" property="createTime"/>
+		<result column="article_short" jdbcType="VARCHAR" property="articleShort"/>
+		<result column="views_count" jdbcType="INTEGER" property="viewsCount"/>
+		<result column="comments_count" jdbcType="INTEGER" property="commentsCount"/>
+		<result column="is_top" jdbcType="BOOLEAN" property="isTop"/>
+		<result column="img_url" jdbcType="VARCHAR" property="imgUrl"/>
 	</resultMap>
 	<sql id="Base_Column_List">
 		<!--@mbg.generated-->
-		article_id, article_title, create_time
+		article_id, article_title, create_time,article_short,views_count,comments_count,is_top,img_url
 	</sql>
 	<select id="getArticleDetail" resultType="xyz.javaee.blog.entity.vo.ArticleDetailVO">
 		select *

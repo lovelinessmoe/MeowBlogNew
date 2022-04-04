@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 28/03/2022 10:56:10
+ Date: 04/04/2022 18:38:03
 */
 
 SET NAMES utf8mb4;
@@ -23,10 +23,14 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE `article`
 (
-    `article_id`    char(32) CHARACTER SET utf8 COLLATE utf8_general_ci     NOT NULL COMMENT '文章id/英文',
-    `article_title` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章名称',
-    `create_time`   datetime                                                NOT NULL COMMENT '发布时间',
-    `article_short` char(64) CHARACTER SET utf8 COLLATE utf8_general_ci     NOT NULL COMMENT '文章简介',
+    `article_id`     char(32) CHARACTER SET utf8 COLLATE utf8_general_ci     NOT NULL COMMENT '文章id/英文',
+    `article_title`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章名称',
+    `create_time`    datetime                                                NOT NULL COMMENT '发布时间',
+    `article_short`  char(64) CHARACTER SET utf8 COLLATE utf8_general_ci     NOT NULL COMMENT '文章简介',
+    `views_count`    int          DEFAULT '0' COMMENT '查看人数',
+    `comments_count` int          DEFAULT '0' COMMENT '评论人数',
+    `is_top`         tinyint      DEFAULT '0' COMMENT '是否是置顶',
+    `img_url`        varchar(255) DEFAULT NULL COMMENT '文章图片url',
     PRIMARY KEY (`article_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3
@@ -39,7 +43,6 @@ DROP TABLE IF EXISTS `article_detail`;
 CREATE TABLE `article_detail`
 (
     `article_content` varchar(1500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '文章的内容',
-    `type`            tinyint(1)                                              DEFAULT NULL COMMENT '0h5 1md',
     `article_id`      char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '文章的id/EN',
     PRIMARY KEY (`article_id`)
 ) ENGINE = InnoDB

@@ -34,12 +34,6 @@ public class ArticleDetail implements Serializable {
     @ApiModelProperty(value="文章的内容")
     private String articleContent;
 
-    /**
-     * 0h5 1md
-     */
-    @TableField(value = "type")
-    @ApiModelProperty(value="0h5 1md")
-    private Boolean type;
 
     private static final long serialVersionUID = 1L;
 
@@ -47,5 +41,4 @@ public class ArticleDetail implements Serializable {
 
     public static final String COL_ARTICLE_CONTENT = "article_content";
 
-    public static final String COL_TYPE = "type";
 }

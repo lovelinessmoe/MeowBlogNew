@@ -11,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author loveliness
+ */
 @ApiModel(value = "xyz-javaee-blog-entity-Article")
 @Data
 @AllArgsConstructor
@@ -38,11 +41,35 @@ public class Article implements Serializable {
     @ApiModelProperty(value = "发布时间")
     private Date createTime;
     /**
-     * 发布时间
+     * 文章简介
      */
     @TableField(value = "article_short", condition = SqlCondition.LIKE)
     @ApiModelProperty(value = "文章简介")
     private String articleShort;
+    /**
+     * 查看人数
+     */
+    @TableField(value = "views_count")
+    @ApiModelProperty(value = "查看人数")
+    private Integer viewsCount;
+    /**
+     * 评论人数
+     */
+    @TableField(value = "comments_count")
+    @ApiModelProperty(value = "评论人数")
+    private Integer commentsCount;
+    /**
+     * 是否置顶
+     */
+    @TableField(value = "is_top")
+    @ApiModelProperty(value = "是否置顶")
+    private Boolean isTop;
+    /**
+     * 文章图片url
+     */
+    @TableField(value = "img_url")
+    @ApiModelProperty(value = "文章图片url")
+    private String imgUrl;
 
     private static final long serialVersionUID = 1L;
 
@@ -53,4 +80,10 @@ public class Article implements Serializable {
     public static final String COL_CREATE_TIME = "create_time";
 
     public static final String COL_ARTICLE_SHORT = "article_short";
+
+    public static final String COL_VIEWS_COUNT = "views_count";
+
+    public static final String COL_COMMENTS_COUNT = "comments_count";
+
+    public static final String COL_IS_TOP = "is_top";
 }

@@ -123,6 +123,12 @@
 			<artifactId>hutool-all</artifactId>
 			<version>5.4.5</version>
 		</dependency>
+		<!--七牛云储存-->
+		<dependency>
+			<groupId>com.qiniu</groupId>
+			<artifactId>qiniu-java-sdk</artifactId>
+			<version>7.9.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>

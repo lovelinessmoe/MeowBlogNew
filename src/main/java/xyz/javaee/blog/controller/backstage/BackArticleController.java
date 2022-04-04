@@ -1,6 +1,7 @@
 package xyz.javaee.blog.controller.backstage;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiOperation;
@@ -98,5 +99,20 @@ public class BackArticleController {
     @ApiOperation(value = "添加或更新文章", notes = "传入文章")
     public Result saveOrUpdateArticle(@RequestBody ArticleDetailVO articleVO) {
         return articleService.saveOrUpdateArticle(articleVO);
+    }
+
+    /**
+     * 更换置顶状态
+     */
+    @PostMapping("/switchTop")
+    @ApiOperation(value = "更换置顶状态", notes = "传入文章id")
+    public Result switchTop(@RequestParam String articleId) {
+        UpdateWrapper<Article> articleUpdateWrapper = new UpdateWrapper<>();
+        //isTop取反
+        articleUpdateWrapper.setSql(Article.COL_IS_TOP + "= NOT " + Article.COL_IS_TOP);
+        //限定文章
+        articleUpdateWrapper.eq(Article.COL_ARTICLE_ID, articleId);
+        //更新
+        return Result.ok().data(articleService.update(articleUpdateWrapper));
     }
 }

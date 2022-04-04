@@ -87,4 +87,8 @@ logging:
         boot:
           autoconfigure: ERROR
 
-
+# 配置你的七牛云
+qi-niu:
+  access-key:
+  secret-key:
+  bucket:

@@ -1,6 +1,9 @@
 package xyz.javaee.blog.entity.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -38,4 +41,23 @@ public class ArticleDetailVO {
      */
     private String articleShort;
 
+    /**
+     * 查看人数
+     */
+    private Integer viewsCount;
+
+    /**
+     * 评论人数
+     */
+    private Integer commentsCount;
+
+    /**
+     * 是否置顶
+     */
+    private Boolean isTop;
+
+    /**
+     * 文章图片url
+     */
+    private String imgUrl;
 }
