@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+.DS_Store
+dump.rdb
+src/main/java/xyz/javaee/blog/entity/dto/
+src/main/resources/static/
+src/main/resources/templates/
+
+/src/main/resources/application-prod.yml

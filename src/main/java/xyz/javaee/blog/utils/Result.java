@@ -38,24 +38,24 @@ public class Result {
     /**
      * 这里是使用链式编程
      */
-    public static xyz.javaee.blog.utils.Result ok() {
-        xyz.javaee.blog.utils.Result result = new xyz.javaee.blog.utils.Result();
+    public static Result ok() {
+        Result result = new Result();
         result.setSuccess(true);
         result.setCode(ResultCode.SUCCESS.getCode());
         result.setMessage(ResultCode.SUCCESS.getMessage());
         return result;
     }
 
-    public static xyz.javaee.blog.utils.Result error() {
-        xyz.javaee.blog.utils.Result result = new xyz.javaee.blog.utils.Result();
+    public static Result error() {
+        Result result = new Result();
         result.setSuccess(false);
         result.setCode(ResultCode.COMMON_FAIL.getCode());
         result.setMessage(ResultCode.COMMON_FAIL.getMessage());
         return result;
     }
 
-    public static xyz.javaee.blog.utils.Result RCode(boolean success, ResultCode resultCode) {
-        xyz.javaee.blog.utils.Result result = new xyz.javaee.blog.utils.Result();
+    public static Result RCode(boolean success, ResultCode resultCode) {
+        Result result = new Result();
         result.setSuccess(success);
         result.setCode(resultCode.getCode());
         result.setMessage(resultCode.getMessage());
@@ -66,41 +66,41 @@ public class Result {
     /**
      * 自定义返回成功与否
      *
-     * @param success
-     * @return
+     * @param success 是否成功
+     * @return 自己
      */
-    public xyz.javaee.blog.utils.Result success(Boolean success) {
+    public Result success(Boolean success) {
         this.setSuccess(success);
         return this;
     }
 
-    public xyz.javaee.blog.utils.Result message(String message) {
+    public Result message(String message) {
         this.setMessage(message);
         return this;
     }
 
-    public xyz.javaee.blog.utils.Result code(Integer code) {
+    public Result code(Integer code) {
         this.setCode(code);
         return this;
     }
 
-    public xyz.javaee.blog.utils.Result data(Object value) {
+    public Result data(Object value) {
         this.setData(value);
         return this;
     }
 
-    public xyz.javaee.blog.utils.Result data(String key, Object value) {
+    public Result data(String key, Object value) {
         if (this.data instanceof HashMap) {
             ((HashMap) this.data).put(key, value);
         } else {
-            HashMap<String, Object> data = new HashMap<>();
+            HashMap<String, Object> data = new HashMap<>(5);
             data.put(key, value);
             this.data = data;
         }
         return this;
     }
 
-    public xyz.javaee.blog.utils.Result data(Map<String, Object> map) {
+    public Result data(Map<String, Object> map) {
         this.setData(map);
         return this;
     }
