@@ -51,6 +51,14 @@ public interface UserService extends IService<User> {
      * @return 包含验证码票证的结果
      */
     Result generateCaptcha();
+
+    /**
+     * 给用户发送验证码
+     *
+     * @param user 用户实体 主要使用邮箱和用户名字段
+     * @return Result
+     */
+    Result mail(User user);
 }
 
 

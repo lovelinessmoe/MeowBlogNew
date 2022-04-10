@@ -42,7 +42,19 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: SELECT 1
-
+  #email
+  mail:
+    host: smtp.mxhichina.com
+    username:
+    password:
+    port: 465
+    #设置为SSL协议
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+      from:
 
 mybatis-plus:
   # 在classpath前添加星号可以使项目热加载成功<br>  # 自定义xml sql文件需要配置这个

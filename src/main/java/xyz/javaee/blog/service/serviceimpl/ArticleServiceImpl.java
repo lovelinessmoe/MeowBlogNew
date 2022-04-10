@@ -1,9 +1,11 @@
 package xyz.javaee.blog.service.serviceimpl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import xyz.javaee.blog.dao.ArticleDetailMapper;
 import xyz.javaee.blog.entity.Article;
 import xyz.javaee.blog.dao.ArticleMapper;
@@ -15,7 +17,6 @@ import xyz.javaee.blog.utils.Result;
 import xyz.javaee.blog.utils.ResultCode;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author loveliness
@@ -33,10 +34,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Transactional(rollbackFor = Exception.class)
     public Result saveOrUpdateArticle(ArticleDetailVO articleVO) {
         try {
-            Article getArticle = articleMapper.selectById(articleVO.getArticleId());
+            //查询是否存在改文章
+            QueryWrapper<Article> queryWrapper = new QueryWrapper<Article>().eq(Article.COL_ARTICLE_ID, articleVO.getArticleId());
+            Long count = articleMapper.selectCount(queryWrapper);
+            //VO转换为实体
             Article article = articleConverter.articleDetailVOToArticle(articleVO);
             ArticleDetail articleDetail = articleConverter.articleDetailVOToArticleDetail(articleVO);
-            if (Objects.isNull(getArticle)) {
+
+            if (count == 0) {
                 articleMapper.insert(article);
                 articleDetailMapper.insert(articleDetail);
             } else {
@@ -44,7 +49,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 articleDetailMapper.updateById(articleDetail);
             }
         } catch (Exception e) {
-            return Result.RCode(false, ResultCode.ARTICLE_NOT_ADD);
+            //手动回滚事务
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.RCode(false, ResultCode.ARTICLE_NOT);
         }
         return Result.ok();
     }
@@ -56,6 +63,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             articleMapper.deleteById(articleId);
             articleDetailMapper.deleteById(articleId);
         } catch (Exception e) {
+            //手动回滚事务
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.RCode(false, ResultCode.ARTICLE_NOT_DELET);
         }
         return Result.ok();

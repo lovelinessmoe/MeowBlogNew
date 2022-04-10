@@ -66,7 +66,7 @@ public class JwtUser implements UserDetails {
         authorities = this.getRoles();
     }
 
-    private static xyz.javaee.blog.entity.JwtUser jwtUser;
+    private static JwtUser jwtUser;
 
 
     /**

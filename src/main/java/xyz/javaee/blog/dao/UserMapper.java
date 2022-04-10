@@ -9,5 +9,5 @@ import xyz.javaee.blog.entity.User;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    Integer register(User userRegister);
+
 }

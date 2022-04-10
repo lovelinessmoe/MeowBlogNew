@@ -2,18 +2,26 @@ package xyz.javaee.blog.service.serviceimpl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
+import cn.hutool.captcha.generator.RandomGenerator;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.util.ObjectUtils;
 import xyz.javaee.blog.dao.UserMapper;
 import xyz.javaee.blog.entity.User;
+import xyz.javaee.blog.entity.vo.MailVo;
 import xyz.javaee.blog.service.UserService;
+import xyz.javaee.blog.utils.MailUtils;
 import xyz.javaee.blog.utils.Result;
+import xyz.javaee.blog.utils.ResultCode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +33,13 @@ import java.util.concurrent.TimeUnit;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     private final UserMapper userMapper;
+    /**
+     * 密码加密
+     */
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    /**
+     * redis操作
+     */
     private final StringRedisTemplate stringRedisTemplate;
 
 
@@ -47,7 +61,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return -1;
         } else {
             userRegister.setPassword(bCryptPasswordEncoder.encode(userRegister.getPassword()));
-            return userMapper.register(userRegister);
+            //2是普通用户
+            userRegister.setRoleId(2);
+            return userMapper.insert(userRegister);
         }
     }
 
@@ -77,5 +93,44 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         stringRedisTemplate.expire(captchaVerification, 60 * 5, TimeUnit.SECONDS);
         return Result.ok().data("img", captcha.getImageBase64Data())
                 .data("captchaVerification", captchaVerification);
+    }
+
+    @Override
+    public Result mail(User user) {
+        if (!MailUtils.isEmail(user.getEmail())) {
+            return Result.RCode(false, ResultCode.EMAIL_FORMAT_ERROR);
+        }
+        if (ObjectUtils.isEmpty(user.getUserName()) || "".equals(user.getUserName())) {
+            return Result.RCode(false, ResultCode.USERNAME_ERROR);
+        }
+        //数据库是否存在用户
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq(User.COL_EMAIL, user.getEmail());
+        Long userNum = userMapper.selectCount(userQueryWrapper);
+        if (userNum == 1) {
+            return Result.RCode(false, ResultCode.USER_ACCOUNT_EMAIL_ALREADY_EXIST);
+        }
+
+        // 生成随机数验证码
+        RandomGenerator randomGenerator = new RandomGenerator(6);
+        String code = randomGenerator.generate();
+        // redis email做key 随机验证码做val
+        stringRedisTemplate.opsForValue().set(user.getEmail(), code);
+        // 30min 过期时间
+        stringRedisTemplate.expire(user.getEmail(), 60 * 30, TimeUnit.SECONDS);
+
+
+        //发送邮件
+        MailVo mailVo = new MailVo();
+        mailVo.setFrom("admin@javaee.xyz");
+        mailVo.setTo(user.getEmail());
+        mailVo.setSubject("喵喵博客注册验证码");
+        mailVo.setText("<div style=\"margin: 0 auto;width: 500px;text-align: center;\">\n" +
+                "        <h3>您好" + user.getUserName() + "，欢迎注册喵喵博客，您的邮箱刚刚在喵喵博客注册，为了保护您的信息安全，我们来信进行邮箱验证，如果此操作不是由您发起的，请忽略此邮件。</h3>\n" +
+                "        <h1>您的验证码为<span style=\"color: red;\">" + code + "</span></h1>\n" +
+                "</div>");
+
+        MailUtils.sendMail(mailVo);
+        return Result.ok();
     }
 }

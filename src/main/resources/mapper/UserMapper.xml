@@ -16,13 +16,5 @@
 		<!--@mbg.generated-->
 		user_id, role_id, user_name, telephone, age, `password`, email
 	</sql>
-	<insert id="register" keyProperty="userid" useGeneratedKeys="true">
-
-		insert into `USER` (user_id,role_id, user_name, telephone, age,`password`,email)
-		VALUES (#{userId,jdbcType=VARCHAR},2,#{userName,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR},
-		#{age,jdbcType=INTEGER},#{password,jdbcType=VARCHAR},
-		#{email,jdbcType=VARCHAR})
-
-	</insert>
 
 </mapper>

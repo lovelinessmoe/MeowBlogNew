@@ -10,7 +10,7 @@ package xyz.javaee.blog.utils;
  * #3001～3999 区间表示接口异常
  * #后面对什么的操作自己在这里注明就行了
  */
-public enum ResultCode{
+public enum ResultCode {
     /* 成功 */
     SUCCESS(200, null),
 
@@ -18,8 +18,8 @@ public enum ResultCode{
     COMMON_FAIL(999, "失败"),
 
     /*文章错误*/
-    ARTICLE_NOT_ADD(1001,"文章添加失败，请更换访问地址"),
-    ARTICLE_NOT_DELET(1002,"文章删除失败"),
+    ARTICLE_NOT(1001, "文章添加/修改失败"),
+    ARTICLE_NOT_DELET(1002, "文章删除失败"),
 
 
     /* 用户错误 */
@@ -30,24 +30,26 @@ public enum ResultCode{
     USER_ACCOUNT_DISABLE(2005, "账号不可用"),
     USER_ACCOUNT_LOCKED(2006, "账号被锁定"),
     USER_ACCOUNT_NOT_EXIST(2007, "账号不存在"),
-    USER_ACCOUNT_ALREADY_EXIST(2008, "账号已存在"),
+    USER_ACCOUNT_USERNAME_ALREADY_EXIST(2008, "账号已存在,请更换用户名"),
     USER_ACCOUNT_USE_BY_OTHERS(2009, "账号下线"),
     USER_CAPTCHA_CODE_ERR(2010, "验证码错误"),
-
+    EMAIL_FORMAT_ERROR(2011, "邮箱格式错误"),
+    USERNAME_ERROR(2012, "用户名错误"),
+    USER_ACCOUNT_EMAIL_ALREADY_EXIST(2013, "账号已存在,请更换邮箱"),
 
     /* 业务错误 */
     NO_PERMISSION(3001, "没有权限"),
 
 
     /*运行时异常*/
-    ARITHMETIC_EXCEPTION(9001,"算数异常");
+    ARITHMETIC_EXCEPTION(9001, "算数异常");
 
 
     private Integer code;
 
     private String message;
 
-    ResultCode(Integer code,String message){
+    ResultCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
