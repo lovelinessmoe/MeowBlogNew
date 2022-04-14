@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -23,9 +24,10 @@ import java.util.ArrayList;
  */
 @RestController
 @AllArgsConstructor
+@Api(tags = "后台用户管理")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/backstage/user")
-public class UserController {
+public class BackUserController {
 
     private final UserService userService;
 

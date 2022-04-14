@@ -3,6 +3,7 @@ package xyz.javaee.blog.controller;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import xyz.javaee.blog.constants.UserConstants;
 import xyz.javaee.blog.entity.User;
 import xyz.javaee.blog.service.AuthService;
 import xyz.javaee.blog.service.UserService;
@@ -47,7 +48,7 @@ public class AuthController {
     public Result register(@RequestBody User userRegister,
                            @ApiParam("验证码") @RequestParam String code) {
 
-        if (userService.checkCaptcha(userRegister.getEmail(), code)) {
+        if (userService.checkCaptcha(UserConstants.REGISTER_MAIL + userRegister.getEmail(), code)) {
             userService.register(userRegister);
             return Result.ok();
         } else {
@@ -61,13 +62,13 @@ public class AuthController {
         return userService.generateCaptcha();
     }
 
-    @PostMapping("/mail")
+    @PostMapping("/registerMail")
     @ApiOperation("获取邮箱验证码,用于注册时")
-    public Result mail(@RequestBody User user,
-                       @ApiParam("随机生成的鉴权码") @RequestParam String captchaVerification,
-                       @ApiParam("验证码") @RequestParam String code) {
+    public Result registerMail(@RequestBody User user,
+                               @ApiParam("随机生成的鉴权码") @RequestParam String captchaVerification,
+                               @ApiParam("验证码") @RequestParam String code) {
         if (userService.checkCaptcha(captchaVerification, code)) {
-            return userService.mail(user);
+            return userService.registerMail(user);
         } else {
             return Result.RCode(false, ResultCode.USER_CAPTCHA_CODE_ERR);
         }

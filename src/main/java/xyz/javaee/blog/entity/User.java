@@ -56,7 +56,7 @@ public class User implements Serializable {
     private Integer age;
 
     /**
-     * 登录密码，加密为md5格式后保存
+     * 登录密码，加密后保存
      */
     @TableField(value = "password")
     @ApiModelProperty(value = "登录密码，加密为md5格式后保存")
@@ -68,6 +68,13 @@ public class User implements Serializable {
     @TableField(value = "email", condition = SqlCondition.LIKE)
     @ApiModelProperty(value = "邮箱")
     private String email;
+
+    /**
+     * 头像
+     */
+    @TableField(value = "avatar_url")
+    @ApiModelProperty(value = "头像")
+    private String avatarUrl;
 
     private static final long serialVersionUID = 1L;
 
@@ -84,4 +91,6 @@ public class User implements Serializable {
     public static final String COL_PASSWORD = "password";
 
     public static final String COL_EMAIL = "email";
+
+    public static final String COL_AVATAR_URL = "avatar_url";
 }

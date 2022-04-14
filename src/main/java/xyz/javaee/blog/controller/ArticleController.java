@@ -3,6 +3,7 @@ package xyz.javaee.blog.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import xyz.javaee.blog.utils.Result;
  * @author loveliness
  */
 @RestController
+@Api(tags = "前台文章")
 @RequestMapping("/article")
 @AllArgsConstructor
 public class ArticleController {

@@ -13,8 +13,9 @@ import xyz.javaee.blog.utils.Result;
 public interface UserService extends IService<User> {
     /**
      * 登陆接口
+     * 只使用邮箱获取
      *
-     * @param loginUser 存在用户名和密码的用户实体
+     * @param loginUser 存在邮箱和密码的用户实体
      * @return 根据实体条件查出的用户
      */
     User login(User loginUser);
@@ -54,11 +55,20 @@ public interface UserService extends IService<User> {
 
     /**
      * 给用户发送验证码
+     * 注册时的方法
      *
      * @param user 用户实体 主要使用邮箱和用户名字段
      * @return Result
      */
-    Result mail(User user);
+    Result registerMail(User user);
+
+    /**
+     * 给用户发送验证码
+     * 修改用户信息时的方法
+     *
+     * @return Result
+     */
+    Result modifyInfMail(String userId);
 }
 
 

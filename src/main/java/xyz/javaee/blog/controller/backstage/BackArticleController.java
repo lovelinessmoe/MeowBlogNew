@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
  */
 @RestController
 @AllArgsConstructor
+@Api(tags = "后台文章管理")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/backstage/article")
 public class BackArticleController {

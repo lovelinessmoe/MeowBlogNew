@@ -1,5 +1,6 @@
 package xyz.javaee.blog.controller.backstage;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
  */
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
+@Api(tags = "后台评论管理")
 @RequestMapping("/backstage/comment")
 @AllArgsConstructor
 public class BackCommentController {

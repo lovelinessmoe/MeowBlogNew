@@ -3,6 +3,7 @@ package xyz.javaee.blog.controller;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.List;
  * @author loveliness
  */
 @RestController
+@Api(tags = "评论")
 @RequestMapping("/comment")
 @AllArgsConstructor
 public class CommentController {

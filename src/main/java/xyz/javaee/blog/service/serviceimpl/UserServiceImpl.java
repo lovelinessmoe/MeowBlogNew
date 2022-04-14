@@ -4,17 +4,15 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.captcha.generator.RandomGenerator;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.util.ObjectUtils;
+import xyz.javaee.blog.constants.UserConstants;
 import xyz.javaee.blog.dao.UserMapper;
 import xyz.javaee.blog.entity.User;
 import xyz.javaee.blog.entity.vo.MailVo;
@@ -24,6 +22,7 @@ import xyz.javaee.blog.utils.Result;
 import xyz.javaee.blog.utils.ResultCode;
 
 import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author loveliness
@@ -46,7 +45,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User login(User loginUser) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        return this.baseMapper.selectOne(userQueryWrapper.eq(User.COL_USER_NAME, loginUser.getUserName()));
+        return this.baseMapper.selectOne(userQueryWrapper.eq(User.COL_EMAIL, loginUser.getEmail()));
     }
 
     @Override
@@ -56,22 +55,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public int register(User userRegister) {
-        boolean b = userNameIfExist(userRegister.getUserName());
-        if (b) {
-            return -1;
-        } else {
-            userRegister.setPassword(bCryptPasswordEncoder.encode(userRegister.getPassword()));
-            //2是普通用户
-            userRegister.setRoleId(2);
-            return userMapper.insert(userRegister);
-        }
-    }
+        //不用检测数据库是否存在用户，发送邮箱验证码的时候验证过了
+        userRegister.setPassword(bCryptPasswordEncoder.encode(userRegister.getPassword()));
+        //2是普通用户
+        userRegister.setRoleId(2);
+        return userMapper.insert(userRegister);
 
-    private boolean userNameIfExist(String username) {
-        User user1 = new User();
-        user1.setTelephone(username);
-        User user = login(user1);
-        return user != null;
     }
 
     @Override
@@ -96,7 +85,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Result mail(User user) {
+    public Result registerMail(User user) {
         if (!MailUtils.isEmail(user.getEmail())) {
             return Result.RCode(false, ResultCode.EMAIL_FORMAT_ERROR);
         }
@@ -114,8 +103,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 生成随机数验证码
         RandomGenerator randomGenerator = new RandomGenerator(6);
         String code = randomGenerator.generate();
-        // redis email做key 随机验证码做val
-        stringRedisTemplate.opsForValue().set(user.getEmail(), code);
+        // redis register+email做key 随机验证码做val
+        stringRedisTemplate.opsForValue().set(UserConstants.REGISTER_MAIL + user.getEmail(), code);
         // 30min 过期时间
         stringRedisTemplate.expire(user.getEmail(), 60 * 30, TimeUnit.SECONDS);
 
@@ -127,6 +116,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         mailVo.setSubject("喵喵博客注册验证码");
         mailVo.setText("<div style=\"margin: 0 auto;width: 500px;text-align: center;\">\n" +
                 "        <h3>您好" + user.getUserName() + "，欢迎注册喵喵博客，您的邮箱刚刚在喵喵博客注册，为了保护您的信息安全，我们来信进行邮箱验证，如果此操作不是由您发起的，请忽略此邮件。</h3>\n" +
+                "        <h1>您的验证码为<span style=\"color: red;\">" + code + "</span></h1>\n" +
+                "</div>");
+
+        MailUtils.sendMail(mailVo);
+        return Result.ok();
+    }
+
+    @Override
+    public Result modifyInfMail(String userId) {
+        //数据库查询用户
+        User user = userMapper.selectById(userId);
+
+        // 生成随机数验证码
+        RandomGenerator randomGenerator = new RandomGenerator(6);
+        String code = randomGenerator.generate();
+        // redis modifyInf+email做key 随机验证码做val
+        stringRedisTemplate.opsForValue().set(UserConstants.MODIFY_INFORMATION_MAIL + user.getEmail(), code);
+        // 5min 过期时间
+        stringRedisTemplate.expire("modifyInf" + userId, 60 * 5, TimeUnit.SECONDS);
+
+        //发送邮件
+        MailVo mailVo = new MailVo();
+        mailVo.setFrom("admin@javaee.xyz");
+        mailVo.setTo(user.getEmail());
+        mailVo.setSubject("喵喵博客修改信息验证码");
+        mailVo.setText("<div style=\"margin: 0 auto;width: 500px;text-align: center;\">\n" +
+                "        <h3>您好" + user.getUserName() + "，您的邮箱刚刚在喵喵博客尽心修改信息操作，为了保护您的信息安全，我们来信进行邮箱验证，如果此操作不是由您发起的，请忽略此邮件。</h3>\n" +
                 "        <h1>您的验证码为<span style=\"color: red;\">" + code + "</span></h1>\n" +
                 "</div>");
 
