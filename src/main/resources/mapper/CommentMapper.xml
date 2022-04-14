@@ -22,7 +22,8 @@
 		       c.content,
 		       c.create_time,
 		       c.p_id,
-		       u.user_name
+		       u.user_name,
+		       u.avatar_url
 		from comment c
 				     left join user u on c.user_id = u.user_id
 		where c.article_id = #{articleId,jdbcType=VARCHAR}

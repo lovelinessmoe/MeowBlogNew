@@ -51,6 +51,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                     tree.putExtra("userId", comment.getUserId());
                     tree.putExtra("content", comment.getContent());
                     tree.putExtra("createTime", comment.getCreateTime());
+                    tree.putExtra("avatarUrl", comment.getAvatarUrl());
                 });
     }
 

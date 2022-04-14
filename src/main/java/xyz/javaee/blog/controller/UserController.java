@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import xyz.javaee.blog.constants.SecurityConstants;
 import xyz.javaee.blog.constants.UserConstants;
@@ -68,8 +69,10 @@ public class UserController {
             //防止通过接口修改邮箱
             user.setEmail(null);
             user.setUserId(userId);
-            //密码进行加密
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            if (!ObjectUtils.isEmpty(user.getPassword())) {
+                //密码进行加密
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            }
             if (userService.updateById(user)) {
                 return Result.ok().message("修改成功");
             } else {

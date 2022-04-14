@@ -20,11 +20,11 @@ public class CurrentUserUtils {
 
     public User getCurrentUser() {
         User user = new User();
-        user.setUserName(getCurrentUserName());
+        user.setEmail(getCurrentEmail());
         return userService.login(user);
     }
 
-    private  String getCurrentUserName() {
+    private String getCurrentEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() != null) {
             return (String) authentication.getPrincipal();

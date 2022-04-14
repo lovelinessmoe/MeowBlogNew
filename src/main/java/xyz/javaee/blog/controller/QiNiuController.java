@@ -16,7 +16,6 @@ import xyz.javaee.blog.utils.Result;
 @RequestMapping("/qiniu")
 @Api(tags = "七牛")
 @AllArgsConstructor
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class QiNiuController {
 
     private final QiniuUpload qiniuUpload;

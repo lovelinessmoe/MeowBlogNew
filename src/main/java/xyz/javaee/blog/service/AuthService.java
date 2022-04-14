@@ -46,7 +46,8 @@ public class AuthService {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        String token = JwtTokenUtils.createToken(user.getUserName(), user.getUserId(), authorities, true);
+        //使用email创建token
+        String token = JwtTokenUtils.createToken(user.getEmail(), user.getUserId(), authorities, true);
         stringRedisTemplate.opsForValue().set(user.getUserId(), token);
         jwtUser.setToken(token);
 

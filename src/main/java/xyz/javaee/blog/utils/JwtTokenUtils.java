@@ -28,7 +28,7 @@ public class JwtTokenUtils {
     private static final byte[] API_KEY_SECRET_BYTES = DatatypeConverter.parseBase64Binary(SecurityConstants.JWT_SECRET_KEY);
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(API_KEY_SECRET_BYTES);
 
-    public static String createToken(String username, String id, List<String> roles, boolean isRememberMe) {
+    public static String createToken(String email, String id, List<String> roles, boolean isRememberMe) {
         long expiration = isRememberMe ? SecurityConstants.EXPIRATION_REMEMBER : SecurityConstants.EXPIRATION;
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
@@ -39,7 +39,7 @@ public class JwtTokenUtils {
                 .setId(id)
                 .setIssuer("SnailClimb")
                 .setIssuedAt(createdDate)
-                .setSubject(username)
+                .setSubject(email)
                 .setExpiration(expirationDate)
                 .compact();
         // 添加 token 前缀 "Bearer ";

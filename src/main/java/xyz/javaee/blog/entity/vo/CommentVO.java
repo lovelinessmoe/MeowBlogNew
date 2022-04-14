@@ -42,4 +42,9 @@ public class CommentVO {
      */
     private String pId;
 
+    /**
+     * 头像
+     */
+    private String avatarUrl;
+
 }
