@@ -60,27 +60,6 @@ mybatis-plus:
   # 在classpath前添加星号可以使项目热加载成功<br>  # 自定义xml sql文件需要配置这个
   mapper-locations: classpath:mapper/*.xml
   global-config:
-    #机器 ID 部分(影响雪花ID)
-    #workerId: 1
-    #数据标识 ID 部分(影响雪花ID)(workerId 和 datacenterId 一起配置才能重新初始化 Sequence)
-    #datacenterId: 18
-    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
-    #field-strategy: 2
-    #驼峰下划线转换
-    #db-column-underline: true
-    #刷新mapper 调试神器
-    #refresh-mapper: true
-    #数据库大写下划线转换
-    #capital-mode: true
-    #序列接口实现类配置
-    #key-generator: com.baomidou.springboot.xxx
-    #逻辑删除配置（下面3个配置）
-    #logic-delete-value: 0
-    #logic-not-delete-value: 1
-    #自定义SQL注入器
-    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
-    #自定义填充策略接口实现
-    #meta-object-handler: com.baomidou.springboot.xxx
     db-config:
       #主键类型
       id-type: auto
@@ -99,8 +78,8 @@ logging:
         boot:
           autoconfigure: ERROR
 
-# 配置你的七牛云
-qi-niu:
-  access-key:
-  secret-key:
+# 配置你的又拍云
+up-yun:
+  user-name:
+  password:
   bucket:
